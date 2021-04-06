@@ -6,15 +6,7 @@ import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Spin, Space } from 'antd';
-import axios from 'axios';
-
-const createOrUpdateUser = async (authtoken) => {
-    return await axios.post(`http://localhost:8000/api/create-or-update-user/`, {}, {
-        headers: {
-            authtoken
-        }
-    });
-}
+import { createOrUpdateUser } from '../../functions/auth';
 
 const Login = ({ history }) => {
 
@@ -40,19 +32,22 @@ const Login = ({ history }) => {
             // get the id token
             const idTokenResult = await user.getIdTokenResult();
 
-            createOrUpdateUser(idTokenResult.token).then((res) => console.log('Update or Create User ', res))
+            createOrUpdateUser(idTokenResult.token).then((res) => {
+                // dispatch the loggin action
+                dispatch({
+                    type: 'LOGGED_IN_USER',
+                    payload: {
+                        name: res.data.name,
+                        email: res.data.email,
+                        token: idTokenResult.token,
+                        role: res.data.role,
+                        _id: res.data._id
+                    }
+                });
+            })
             .catch(err => console.log(err))
-            
-            // dispatch the loggin action
-            // dispatch({
-            //     type: 'LOGGED_IN_USER',
-            //     payload: {
-            //         email: user.email,
-            //         token: idTokenResult.token
-            //     }
-            // });
 
-            // history.push('/')
+            history.push('/')
         } catch (error) {
             console.log(error);
             toast.error(error.message);
@@ -65,15 +60,20 @@ const Login = ({ history }) => {
             const { user } = result;
             const idTokenResult = await user.getIdTokenResult();
             
-            // dispatch the loggin action
-            dispatch({
-                type: 'LOGGED_IN_USER',
-                payload: {
-                    email: user.email,
-                    token: idTokenResult.token
-                }
-            });
-
+            createOrUpdateUser(idTokenResult.token).then((res) => {
+                // dispatch the loggin action
+                dispatch({
+                    type: 'LOGGED_IN_USER',
+                    payload: {
+                        name: res.data.name,
+                        email: res.data.email,
+                        token: idTokenResult.token,
+                        role: res.data.role,
+                        _id: res.data._id
+                    }
+                });
+            })
+            .catch(err => console.log(err))
             history.push('/');
         }).catch(error => {
             console.log(error);
