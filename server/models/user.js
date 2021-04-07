@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         index: true
     },
-    rule: {
+    role: {
         type: String,
         default: 'subscriber'
     },
