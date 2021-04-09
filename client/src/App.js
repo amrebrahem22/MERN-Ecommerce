@@ -11,6 +11,7 @@ import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import History from './pages/user/History';
+import Password from './pages/user/Password';
 import Header from './components/nav/Header';
 import { currentUser } from './functions/auth';
 import UserRouter from './components/routes/UserRouter';
@@ -56,6 +57,7 @@ function App() {
         <Route exact path='/register/complete' component={RegisterComplete} />
         <Route exact path='/forgot/password' component={ForgotPassword} />
         <UserRouter exact path='/user/history' component={History} />
+        <UserRouter exact path='/user/password' component={Password} />
       </Switch>
     </div>
   );
