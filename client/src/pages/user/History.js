@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
+import UserNav from '../../components/nav/UserNav';
 
 function History() {
     return (
-        <div>
-            <h1>Welcome in History</h1>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-md-2">
+                    <UserNav />
+                </div>
+                <div className="col">
+                    <h1>Welcome in History</h1>
+                </div>
+            </div>
         </div>
     )
 }
