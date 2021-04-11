@@ -15,3 +15,11 @@ export const currentUser = async (authtoken) => {
         }
     });
 }
+
+export const currentAdmin = async (authtoken) => {
+    return await axios.post(`http://localhost:8000/api/current-admin/`, {}, {
+        headers: {
+            authtoken
+        }
+    });
+}
