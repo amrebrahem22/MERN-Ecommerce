@@ -44,8 +44,13 @@ function Header() {
                 )}
                 {user && (
                     <SubMenu key="SubMenu" icon={<SettingOutlined />} className="float-right" title={user? user.email.split('@')[0] : 'Username'}>
-                        <Menu.Item key="register"><NavLink to="/register">Register</NavLink></Menu.Item>
-                        <Menu.Item key="login"><NavLink to="/login">Login</NavLink></Menu.Item>
+                        {user && user.role === 'subscriber' && (
+                            <Menu.Item key="dashboard"><NavLink to="/user/history">Dashboard</NavLink></Menu.Item>
+                        )}
+
+                        {user && user.role === 'admin' && (
+                            <Menu.Item key="dashboard"><NavLink to="/admin/dashboard">Dashboard</NavLink></Menu.Item>
+                        )}
                         <Menu.Item icon={<LogoutOutlined />} onClick={logout}>Logout</Menu.Item>
                     </SubMenu>
                 )}

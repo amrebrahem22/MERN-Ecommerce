@@ -11,6 +11,7 @@ import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import CategoryCreate from './pages/admin/category/CategoryCreate';
 import History from './pages/user/History';
 import Password from './pages/user/Password';
 import Header from './components/nav/Header';
@@ -61,6 +62,7 @@ function App() {
         <UserRouter exact path='/user/history' component={History} />
         <UserRouter exact path='/user/password' component={Password} />
         <AdminRouter exact path='/admin/dashboard' component={AdminDashboard} />
+        <AdminRouter exact path='/admin/category' component={CategoryCreate} />
       </Switch>
     </div>
   );
