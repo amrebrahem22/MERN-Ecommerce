@@ -14,6 +14,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/category/CategoryCreate';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
 import SubCreate from './pages/admin/sub/SubCreate';
+import SubUpdate from './pages/admin/sub/SubUpdate';
 import History from './pages/user/History';
 import Password from './pages/user/Password';
 import Header from './components/nav/Header';
@@ -67,6 +68,7 @@ function App() {
         <AdminRouter exact path='/admin/category' component={CategoryCreate} />
         <AdminRouter exact path='/admin/category/:slug' component={CategoryUpdate} />
         <AdminRouter exact path='/admin/sub' component={SubCreate} />
+        <AdminRouter exact path='/admin/sub/:slug' component={SubUpdate} />
       </Switch>
     </div>
   );
