@@ -77,7 +77,7 @@ function CategoryCreate() {
                             <span onClick={() => handleRemove(c.slug)} className="btn btn-sm float-right">
                                 <DeleteOutlined className="text-danger" />
                             </span>
-                            <Link to={`/category/${c.slug}`} >
+                            <Link to={`/admin/category/${c.slug}`} >
                                 <span className="btn btn-sm float-right">
                                     <EditOutlined className="text-primary" />
                                 </span>
