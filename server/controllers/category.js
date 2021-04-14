@@ -8,12 +8,12 @@ exports.create = async (req, res) => {
         res.json(category)
     } catch (err) {
         console.log(err);
-        res.status(400)
+        res.status(400).send('Faild to Create')
     }
 }
 
 exports.list = async (req, res) =>
-    res.json(await Category.find({}).sort({createdAt: -1}).exec())
+    res.json(await Category.find().sort({createdAt: -1}).exec())
 
 exports.read = async (req, res) => {
     const category = await Category.findOne({slug: req.params.slug}).exec()

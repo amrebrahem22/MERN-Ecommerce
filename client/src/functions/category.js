@@ -8,4 +8,4 @@ export const removeCategory = async (slug, authtoken) => await axios.delete(`htt
 
 export const updateCategory = async (slug, category, authtoken) => await axios.put(`http://localhost:8000/api/category/${slug}`, {headers: { authtoken }})
 
-export const createCategory = async (slug, category, authtoken) => await axios.post(`http://localhost:8000/api/category`, category,  {headers: { authtoken }})
+export const createCategory = async (category, authtoken) => await axios.post(`http://localhost:8000/api/category`, category,  {headers: { authtoken }})
