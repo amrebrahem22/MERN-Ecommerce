@@ -17,6 +17,6 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     // wishlist: [{ type: ObjectId, ref: 'product' }]
-}, {timestamp: true});
+}, {timestamps: true});
 
 module.exports = mongoose.model('User', userSchema);
