@@ -13,6 +13,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/category/CategoryCreate';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
+import ProductCreate from './pages/admin/product/ProductCreate';
 import SubCreate from './pages/admin/sub/SubCreate';
 import SubUpdate from './pages/admin/sub/SubUpdate';
 import History from './pages/user/History';
@@ -69,6 +70,7 @@ function App() {
         <AdminRouter exact path='/admin/category/:slug' component={CategoryUpdate} />
         <AdminRouter exact path='/admin/sub' component={SubCreate} />
         <AdminRouter exact path='/admin/sub/:slug' component={SubUpdate} />
+        <AdminRouter exact path='/admin/product' component={ProductCreate} />
       </Switch>
     </div>
   );
