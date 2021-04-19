@@ -14,6 +14,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/category/CategoryCreate';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
 import ProductCreate from './pages/admin/product/ProductCreate';
+import ProductUpdate from './pages/admin/product/ProductUpdate';
+import AllProducts from './pages/admin/product/AllProducts';
 import SubCreate from './pages/admin/sub/SubCreate';
 import SubUpdate from './pages/admin/sub/SubUpdate';
 import History from './pages/user/History';
@@ -71,6 +73,8 @@ function App() {
         <AdminRouter exact path='/admin/sub' component={SubCreate} />
         <AdminRouter exact path='/admin/sub/:slug' component={SubUpdate} />
         <AdminRouter exact path='/admin/product' component={ProductCreate} />
+        <AdminRouter exact path='/admin/products' component={AllProducts} />
+        <AdminRouter exact path='/admin/product/:slug' component={ProductUpdate} />
       </Switch>
     </div>
   );

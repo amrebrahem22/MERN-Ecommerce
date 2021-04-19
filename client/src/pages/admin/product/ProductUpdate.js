@@ -2,10 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { Spin, Space, Select } from 'antd';
 import { useSelector } from 'react-redux';
 import {toast} from 'react-toastify';
-import { Link } from 'react-router-dom';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import AdminNav from '../../../components/nav/AdminNav';
-import {createProduct} from '../../../functions/product';
+import {getProduct} from '../../../functions/product';
 import {getCategories, getCategorySubs} from '../../../functions/category';
 import UploadImage from '../../../components/forms/UploadImage';
 
@@ -15,7 +13,6 @@ const initailState = {
     title: '',
     description: '',
     price: 0,
-    categories: [],
     category: '',
     subs: [],
     shipping: 'No',
@@ -28,32 +25,32 @@ const initailState = {
 
 }
 
-function ProductCreate() {
+function ProductUpdate({match}) {
 
     const [values, setValues] = useState(initailState);
+    const [categories, setCategories] = useState([]);
     const [subOptions, setSubOptions] = useState([]);
     const [showSubs, setShowSubs] = useState(false);
-    const { title, description, price, categories, category, subs, shipping, quantity, images, colors, brands, color, brand, } = values;
+    const { title, description, price, category, subs, shipping, quantity, images, colors, brands, color, brand, } = values;
 
     const { user } = useSelector(state => ({...state}));
 
     useEffect(() => {
         loadCategories();
+        loadProduct(match.params.slug);
     }, [])
 
-    const loadCategories = () => getCategories().then(res => setValues({...values, categories: res.data}));
+    const loadCategories = () => getCategories().then(res => setCategories(res.data));
+    const loadProduct = slug => getProduct(slug).then(res => {
+        setValues({...values, ...res.data})
+        if(res.data.category != null) {
+            getCategorySubs(res.data.category._id).then(response => setSubOptions(response.data)).catch(err => console.log(err))
+            setShowSubs(true)
+        }
+    });
 
     const handleSubmit = e => {
         e.preventDefault();
-
-        createProduct(values, user.token)
-        .then(res => {
-            console.log(res)
-            toast.success(`Product ${res.data.title} Created.`)
-        }).catch(err => {
-            console.log(err)
-            toast.error(err.response.data.err)
-        })
     }
 
     const handleChange = e => {
@@ -76,7 +73,7 @@ function ProductCreate() {
                     <AdminNav />
                 </div>
                 <div className="col">
-                    <h1>Product Create</h1>
+                    <h1>Product Update</h1>
 
                     <form onSubmit={handleSubmit}>
                         {JSON.stringify(values.images)}
@@ -97,7 +94,7 @@ function ProductCreate() {
                         </div>
                         <div className="form-group">
                             <label>Shipping</label>
-                            <select name="shipping" className="form-control" onChange={handleChange}>
+                            <select name="shipping" value={shipping === "Yes"? "Yes" : "No"} className="form-control" onChange={handleChange}>
                                 <option value="No">No</option>
                                 <option value="Yes">Yes</option>
                             </select>
@@ -108,7 +105,7 @@ function ProductCreate() {
                         </div>
                         <div className="form-group">
                             <label>Category</label>
-                            <select name="category" className="form-control" onChange={handleCategoryChange}>
+                            <select name="category" className="form-control" value={category._id} onChange={handleCategoryChange}>
                                 <option>Please Select</option>
                                 {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                             </select>
@@ -130,14 +127,14 @@ function ProductCreate() {
                         )}
                         <div className="form-group">
                             <label>Color</label>
-                            <select name="color" className="form-control" onChange={handleChange}>
+                            <select name="color" className="form-control" value={color} onChange={handleChange}>
                                 <option>Please Select</option>
                                 {colors.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
                         </div>
                         <div className="form-group">
                             <label>Brand</label>
-                            <select name="brand" className="form-control" onChange={handleChange}>
+                            <select name="brand" className="form-control" value={brand} onChange={handleChange}>
                                 <option>Please Select</option>
                                 {brands.map(b => <option key={b} value={b}>{b}</option>)}
                             </select>
@@ -150,4 +147,4 @@ function ProductCreate() {
     )
 }
 
-export default ProductCreate
+export default ProductUpdate

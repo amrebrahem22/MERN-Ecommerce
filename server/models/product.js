@@ -39,9 +39,9 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    // images: {
-    //     type: Array
-    // },
+    images: {
+        type: Array
+    },
     shipping: {
         type: String,
         enum: ['Yes', 'No']

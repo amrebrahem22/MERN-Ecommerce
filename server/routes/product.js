@@ -4,9 +4,11 @@ const router = express.Router();
 // Middleware
 const { authCheck, adminCheck } = require('../middlewares/auth');
 
-const { create, read } = require('../controllers/product');
+const { create, listAll, remove, read } = require('../controllers/product');
 
 router.post('/product', authCheck, adminCheck, create);
-router.get('/products', read);
+router.get('/products/:count', listAll);
+router.delete('/products/:slug', authCheck, adminCheck, remove);
+router.get('/product/:slug', read);
 
 module.exports = router;
