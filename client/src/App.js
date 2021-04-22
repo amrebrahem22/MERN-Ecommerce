@@ -6,6 +6,7 @@ import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import Home from './pages/Home';
+import Product from './pages/Product';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
@@ -75,6 +76,7 @@ function App() {
         <AdminRouter exact path='/admin/product' component={ProductCreate} />
         <AdminRouter exact path='/admin/products' component={AllProducts} />
         <AdminRouter exact path='/admin/product/:slug' component={ProductUpdate} />
+        <Route exact path='/product/:slug' component={Product} />
       </Switch>
     </div>
   );

@@ -32,3 +32,32 @@ exports.remove = async (req, res) => {
         res.status(400).send('Product Delete Faild');
     }
 }
+
+exports.update = async (req, res) => {
+    try {
+        if (req.body.title) req.body.slug = slugify(req.body.title);
+        const product = await Product.findOneAndUpdate({slug: req.params.slug}, req.body, {new: true}).exec();
+        res.json(product); 
+    } catch (err) {
+        console.log('PRODUCT UPDATE ERROR => ', err);
+        res.status(400).json({err: err.message});
+    }
+}
+
+exports.list = async (req, res) => {
+    const {sort, order, page} = req.body
+    const currentPage = page || 1;
+    const perPage = 3;
+
+    try {
+        let products = await Product.find().skip((currentPage - 1) * perPage).limit(perPage).populate('category').populate('subs').sort([[sort, order]]).exec();
+        res.json(products);
+    } catch(err) {
+        console.log(err)
+    }
+} 
+
+exports.productsTotal = async (req, res) => {
+    let total = await Product.find({}).estimatedDocumentCount().exec();
+    res.json(total)
+}

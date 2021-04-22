@@ -3,7 +3,7 @@ import { Spin, Space, Select } from 'antd';
 import { useSelector } from 'react-redux';
 import {toast} from 'react-toastify';
 import AdminNav from '../../../components/nav/AdminNav';
-import {getProduct} from '../../../functions/product';
+import {getProduct, updateProduct} from '../../../functions/product';
 import {getCategories, getCategorySubs} from '../../../functions/category';
 import UploadImage from '../../../components/forms/UploadImage';
 
@@ -25,12 +25,15 @@ const initailState = {
 
 }
 
-function ProductUpdate({match}) {
+function ProductUpdate({match, history}) {
 
     const [values, setValues] = useState(initailState);
     const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const [subOptions, setSubOptions] = useState([]);
+    const [defaultSubs, setDefaultSubs] = useState([]);
     const [showSubs, setShowSubs] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { title, description, price, category, subs, shipping, quantity, images, colors, brands, color, brand, } = values;
 
     const { user } = useSelector(state => ({...state}));
@@ -43,14 +46,33 @@ function ProductUpdate({match}) {
     const loadCategories = () => getCategories().then(res => setCategories(res.data));
     const loadProduct = slug => getProduct(slug).then(res => {
         setValues({...values, ...res.data})
+        console.log('PRODUCT', res)
+        let arr = [];
         if(res.data.category != null) {
             getCategorySubs(res.data.category._id).then(response => setSubOptions(response.data)).catch(err => console.log(err))
             setShowSubs(true)
         }
+        res.data.subs.map(s => arr.push(s._id))
+        console.log(arr)
+        setDefaultSubs(arr);
     });
 
     const handleSubmit = e => {
         e.preventDefault();
+        setLoading(true);
+        values.subs = defaultSubs;
+        values.category= selectedCategory ? selectedCategory : values.category;
+
+        updateProduct(match.params.slug, values, user.token)
+        .then(res => {
+            setLoading(false);
+            toast.success(`${res.data.title} Updated Suucessfully.`);
+            history.push('/admin/products')
+        }).catch(err => {
+            setLoading(false);
+            console.log('PRODUCT FAILD TO UPDATE', err)
+            toast.error(err.response.data.err)
+        })
     }
 
     const handleChange = e => {
@@ -58,12 +80,14 @@ function ProductUpdate({match}) {
     }
     
     const handleCategoryChange = e => {
-        setValues({...values, subs: [], category: e.target.value});
+        setValues({...values, subs: []});
+        setSelectedCategory(e.target.value);
         getCategorySubs(e.target.value).then(res => setSubOptions(res.data)).catch(err => console.log(err))
         setShowSubs(true);
-    }
-    const handleSelectChange = value => {
-        setValues({...values, subs: value});
+        setDefaultSubs([]);
+        if(values.category._id == e.target.value) {
+            loadProduct(match.params.slug)
+        }
     }
 
     return (
@@ -74,8 +98,12 @@ function ProductUpdate({match}) {
                 </div>
                 <div className="col">
                     <h1>Product Update</h1>
+                    {loading ? 
+                        (<Space size="middle">
+                            <Spin size="large" />
+                        </Space>) :
 
-                    <form onSubmit={handleSubmit}>
+                    (<form onSubmit={handleSubmit}>
                         {JSON.stringify(values.images)}
                         <div className="py-3">
                             <UploadImage values={values} setValues={setValues} />
@@ -105,7 +133,7 @@ function ProductUpdate({match}) {
                         </div>
                         <div className="form-group">
                             <label>Category</label>
-                            <select name="category" className="form-control" value={category._id} onChange={handleCategoryChange}>
+                            <select name="category" className="form-control" value={selectedCategory ? selectedCategory : category._id} onChange={handleCategoryChange}>
                                 <option>Please Select</option>
                                 {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                             </select>
@@ -118,8 +146,8 @@ function ProductUpdate({match}) {
                                     name="subs"
                                     style={{ width: '100%' }}
                                     placeholder="Please select"
-                                    onChange={handleSelectChange}
-                                    value={subs}
+                                    onChange={value => setDefaultSubs(value)}
+                                    value={defaultSubs}
                                 >
                                     {subOptions.length > 0 && subOptions.map(s => <Option key={s._id} value={s._id}>{s.name}</Option>) }
                                 </Select>
@@ -140,7 +168,8 @@ function ProductUpdate({match}) {
                             </select>
                         </div>
                         <button className="btn btn-outline-info">Save</button>
-                    </form>
+                    </form>)
+                    }
                 </div>
             </div>
         </div>

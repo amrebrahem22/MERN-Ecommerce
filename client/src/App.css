@@ -1,3 +1,4 @@
-.amr {
-  color: red !important;
+.slide img {
+  height: 450px;
+  object-fit: contain;
 }
