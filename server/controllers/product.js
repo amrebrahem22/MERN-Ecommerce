@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const User = require('../models/user');
 const slugify = require('slugify');
 
 exports.create = async (req, res) => {
@@ -63,46 +64,53 @@ exports.productsTotal = async (req, res) => {
 }
 
 exports.productStar = async (req, res) => {
-    // get the product
-    const product = await Product.findById(req.params.productId).exec()
-    // get the user
-    const user = await User.findOne({email: req.user.email}).exec();
-    // get the star
+    const product = await Product.findById(req.params.productId).exec();
+    const user = await User.findOne({ email: req.user.email }).exec();
     const { star } = req.body;
 
-    // get the rate if exist
-    const existingRate = product.ratings.find(elem => elem.postedBy.toString() === user._id.toString())
+    // who is updating?
+    // check if currently logged in user have already added rating to this product?
+    let existingRatingObject = product.ratings.find(
+        (ele) => ele.postedBy.toString() === user._id.toString()
+    );
 
-    // chech if the user left rate, if not push it to ratings array
-    if (existingRate === undefined) {
-        let rateAdded = await Product.findByIdAndUpdate(
-            product._id,
-            {
-                $push: {
-                    ratings: {
-                        star, postedBy: user._id
-                    }
-                }
-            },
-            { new: true } 
+    // if user haven't left rating yet, push it
+    if (existingRatingObject === undefined) {
+        let ratingAdded = await Product.findByIdAndUpdate(
+        product._id,
+        {
+            $push: { ratings: { star, postedBy: user._id } },
+        },
+        { new: true }
         ).exec();
-
-        console.log('rateAdded=>', rateAdded);
-        res.json(rateAdded);
-
+        console.log("ratingAdded", ratingAdded);
+        res.json(ratingAdded);
     } else {
-        // if there's rate for this user get it and update it
-        let rateUpdated = await Product.findOne(
-            {
-                ratings: {$elemMatch: existingRate}
-            },
-            {
-                $set: { 'ratings.$.star': star }
-            },
-            { new: true }
+        // if user have already left rating, update it
+        const ratingUpdated = await Product.updateOne(
+        {
+            ratings: { $elemMatch: existingRatingObject },
+        },
+        { $set: { "ratings.$.star": star } },
+        { new: true }
         ).exec();
-        
-        console.log('rateUpdated=>', rateUpdated);
-        res.json(rateUpdated);
+        console.log("ratingUpdated", ratingUpdated);
+        res.json(ratingUpdated);
     }
+}
+
+exports.listRelated = async (req, res) => {
+    const product = await Product.findById(req.params.productId).exec();
+
+    const related = await Product.find({
+        _id: { $ne: product._id },
+        category: product.category
+    })
+    .limit(3)
+    .populate('category')
+    .populate('subs')
+    .populate('postedBy')
+    .exec();
+
+    res.json(related);
 }

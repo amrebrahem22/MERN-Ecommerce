@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { Spin, Space } from 'antd';
 import { useSelector } from 'react-redux';
 import {toast} from 'react-toastify';
-import { Link } from 'react-router-dom';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import AdminNav from '../../../components/nav/AdminNav';
 import {getCategories} from '../../../functions/category';
 import {updateSub, getSub } from '../../../functions/sub';
@@ -12,7 +10,6 @@ function SubUpdate({match, history}) {
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
-    const [sub, setSub] = useState([]);
     const [parent, setParent] = useState('');
 
     const { user } = useSelector(state => ({...state}));
@@ -24,8 +21,9 @@ function SubUpdate({match, history}) {
 
     const loadCategories = () => getCategories().then(res => setCategories(res.data))
     const loadSub = () => getSub(match.params.slug).then(res => {
-        setName(res.data.name);
-        setParent(res.data.parent)
+        console.log(res)
+        setName(res.data.sub.name);
+        setParent(res.data.sub.parent)
     })
 
     const handleSubmit = e => {

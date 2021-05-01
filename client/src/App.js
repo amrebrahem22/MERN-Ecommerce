@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import './App.css';
 import Home from './pages/Home';
 import Product from './pages/Product';
+import Category from './pages/Category';
+import Sub from './pages/Sub';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
@@ -77,6 +79,8 @@ function App() {
         <AdminRouter exact path='/admin/products' component={AllProducts} />
         <AdminRouter exact path='/admin/product/:slug' component={ProductUpdate} />
         <Route exact path='/product/:slug' component={Product} />
+        <Route exact path='/categories/:slug' component={Category} />
+        <Route exact path='/subs/:slug' component={Sub} />
       </Switch>
     </div>
   );

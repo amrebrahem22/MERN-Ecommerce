@@ -13,7 +13,7 @@ function ProductListItems({product}) {
             </li>
             {category && <li className="list-group-item">
                 Category{" "}
-                <Link to={`/category/${category.slug}`} className="label label-defaul label-pill pull-xs-right">
+                <Link to={`/categories/${category.slug}`} className="label label-defaul label-pill pull-xs-right">
                     {category.name}
                 </Link>
             </li>}

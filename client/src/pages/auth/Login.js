@@ -19,14 +19,25 @@ const Login = ({ history }) => {
     let { user } = useSelector(state => ({...state}));
 
     useEffect(() => {
-        if (user && user.token) history.push('/');
-    }, [user]);
+        let intended = history.location.state;
+        if(intended) {
+            return;
+        } else {
+            if (user && user.token) history.push('/');
+        }
+    }, [user, history]);
 
     const roleBasedRedirect = res => {
-        if (res.data.role === 'admin') {
-            history.push('/admin/dashboard')
+        let intended = history.location.state;
+        if(intended) {
+            history.push(intended.from)
         } else {
-            history.push('/user/history')
+
+            if (res.data.role === 'admin') {
+                history.push('/admin/dashboard')
+            } else {
+                history.push('/user/history')
+            }
         }
     }
 
