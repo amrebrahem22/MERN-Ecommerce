@@ -9,3 +9,4 @@ export const getProductsTotal = async () => await axios.get(`http://localhost:80
 export const removeProduct = async (slug, authtoken) => await axios.delete(`http://localhost:8000/api/products/${slug}`, {headers: { authtoken }})
 export const getProduct = async (slug) => await axios.get(`http://localhost:8000/api/product/${slug}`)
 export const getRelated = async (productId) => await axios.get(`http://localhost:8000/api/product/related/${productId}`)
+export const fetchProductsByFilter = async (arg) => await axios.post(`http://localhost:8000/api/product/filters`, arg)

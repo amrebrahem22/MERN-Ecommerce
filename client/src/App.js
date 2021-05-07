@@ -8,6 +8,7 @@ import './App.css';
 import Home from './pages/Home';
 import Product from './pages/Product';
 import Category from './pages/Category';
+import Shop from './pages/Shop';
 import Sub from './pages/Sub';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -81,6 +82,7 @@ function App() {
         <Route exact path='/product/:slug' component={Product} />
         <Route exact path='/categories/:slug' component={Category} />
         <Route exact path='/subs/:slug' component={Sub} />
+        <Route exact path='/shop' component={Shop} />
       </Switch>
     </div>
   );

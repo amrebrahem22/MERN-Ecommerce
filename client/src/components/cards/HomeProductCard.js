@@ -24,7 +24,7 @@ function HomeProductCard({product, loading}) {
                 ]}
                 >
                     <Meta
-                    title={product.title}
+                    title={`${product.title} - $${product.price}`}
                     description={product.description}
                     />
             </Card>

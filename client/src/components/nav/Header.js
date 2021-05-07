@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu } from 'antd';
-import { AppstoreOutlined, SettingOutlined, UserAddOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, SettingOutlined, UserAddOutlined, UserOutlined, LogoutOutlined, ShopOutlined } from '@ant-design/icons';
 import firebase from 'firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
+import Search from '../forms/Search';
 const { SubMenu } = Menu;
 
 function Header() {
@@ -31,6 +31,9 @@ function Header() {
                 <Menu.Item key="home" icon={<AppstoreOutlined />}>
                     <NavLink to="/">Home</NavLink>
                 </Menu.Item>
+                <Menu.Item key="shop" icon={<ShopOutlined />}>
+                    <NavLink to="/shop">Shop</NavLink>
+                </Menu.Item>
                 {!user && (
                     <Menu.Item key="register" icon={<UserAddOutlined />} className="float-right">
                         <NavLink to="/register">Register</NavLink>
@@ -54,6 +57,10 @@ function Header() {
                         <Menu.Item icon={<LogoutOutlined />} onClick={logout}>Logout</Menu.Item>
                     </SubMenu>
                 )}
+
+                <span className="float-right p-1">
+                    <Search />
+                </span>
             </Menu>
         </div>
     )
