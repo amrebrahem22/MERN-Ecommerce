@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import StarRatings from 'react-star-ratings';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import _ from 'lodash'
+import { useSelector, useDispatch } from 'react-redux';
 import ProductListItems from './ProductListItems';
 import RateProductModal from '../modals/RateProductModal';
 import {showAverage} from '../../functions/rating';
@@ -13,6 +15,43 @@ const {Meta} = Card;
 const {TabPane} = Tabs;
 
 function SingleProduct({product, onStarClick, star}) {
+    const {user, cart} = useSelector(state => ({...state}));
+    const dispatch = useDispatch();
+
+    const handleAddToCart = () => {
+        let cart = [];
+
+        if (typeof window !== 'undefined') {
+            // if the cart in localStorage
+            if(localStorage.getItem('cart')) {
+                cart = JSON.parse(localStorage.getItem('cart'))
+            }
+
+            // push the new item to the cart
+            cart.push({
+                ...product,
+                count: 1
+            });
+
+            // remove duplicates
+            let unique = _.uniqWith(cart, _.isEqual);
+
+            // save to local storage
+            localStorage.setItem('cart', JSON.stringify(unique))
+
+            // Diapatch to redux store
+            dispatch({
+                type: 'ADD_TO_CART',
+                payload: unique
+            })
+
+            dispatch({
+                type: 'SET_VISIBLE',
+                payload: true
+            })
+
+        }
+    }
     return (
         <>
             <div className="col-md-7">
@@ -39,9 +78,9 @@ function SingleProduct({product, onStarClick, star}) {
             <div className="col-md-5">
                 <Card 
                     actions={[
-                        <>
+                        <div onClick={handleAddToCart}>
                             <ShoppingCartOutlined className="text-success" /> <br/> Add to Cart
-                        </>,
+                        </div>,
                         <Link to="/">
                             <HeartOutlined className="text-info" /> <br /> Add to Wishlist
                         </Link>,

@@ -1,12 +1,53 @@
 import React from 'react'
-import { Skeleton, Card, Avatar } from 'antd';
+import { Skeleton, Card } from 'antd';
 import { EyeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import _ from 'lodash'
+import { useSelector, useDispatch } from 'react-redux';
 import {showAverage} from '../../functions/rating';
 
 const { Meta } = Card;
 
 function HomeProductCard({product, loading}) {
+
+    const {user, cart} = useSelector(state => ({...state}));
+    const dispatch = useDispatch();
+
+    const handleAddToCart = () => {
+        let cart = [];
+
+        if (typeof window !== 'undefined') {
+            // if the cart in localStorage
+            if(localStorage.getItem('cart')) {
+                cart = JSON.parse(localStorage.getItem('cart'))
+            }
+
+            // push the new item to the cart
+            cart.push({
+                ...product,
+                count: 1
+            });
+
+            // remove duplicates
+            let unique = _.uniqWith(cart, _.isEqual);
+
+            // save to local storage
+            localStorage.setItem('cart', JSON.stringify(unique))
+
+            // Diapatch to redux store
+            dispatch({
+                type: 'ADD_TO_CART',
+                payload: unique
+            })
+            
+            dispatch({
+                type: 'SET_VISIBLE',
+                payload: true
+            })
+
+        }
+    }
+
     return (
         <Skeleton loading={loading} avatar active>
             {product && product.ratings && product.ratings.length > 0 ? showAverage(product) : <div className="text-center p-2" >no rating yet</div> }
@@ -20,7 +61,7 @@ function HomeProductCard({product, loading}) {
                             <EyeOutlined key="detail" />
                         </Link>
                     </>,
-                    <ShoppingCartOutlined key="cart" />,
+                    <ShoppingCartOutlined key="cart" onClick={handleAddToCart}/>,
                 ]}
                 >
                     <Meta
