@@ -10,6 +10,7 @@ import Product from './pages/Product';
 import Category from './pages/Category';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import Sub from './pages/Sub';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -87,6 +88,7 @@ function App() {
         <Route exact path='/subs/:slug' component={Sub} />
         <Route exact path='/shop' component={Shop} />
         <Route exact path='/cart' component={Cart} />
+        <Route exact path='/checkout' component={Checkout} />
       </Switch>
     </div>
   );
