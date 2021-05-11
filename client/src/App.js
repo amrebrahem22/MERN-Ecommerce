@@ -25,6 +25,7 @@ import ProductUpdate from './pages/admin/product/ProductUpdate';
 import AllProducts from './pages/admin/product/AllProducts';
 import SubCreate from './pages/admin/sub/SubCreate';
 import SubUpdate from './pages/admin/sub/SubUpdate';
+import CreateCoupon from './pages/admin/coupon/CreateCoupon';
 import History from './pages/user/History';
 import Password from './pages/user/Password';
 import Header from './components/nav/Header';
@@ -83,6 +84,7 @@ function App() {
         <AdminRouter exact path='/admin/product' component={ProductCreate} />
         <AdminRouter exact path='/admin/products' component={AllProducts} />
         <AdminRouter exact path='/admin/product/:slug' component={ProductUpdate} />
+        <AdminRouter exact path='/admin/coupon' component={CreateCoupon} />
         <Route exact path='/product/:slug' component={Product} />
         <Route exact path='/categories/:slug' component={Category} />
         <Route exact path='/subs/:slug' component={Sub} />
