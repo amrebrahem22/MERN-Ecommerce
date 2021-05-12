@@ -12,6 +12,7 @@ import Shop from './pages/Shop';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Sub from './pages/Sub';
+import Payment from './pages/Payment';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import SideDrawer from './components/drawer/SideDrawer';
@@ -91,6 +92,7 @@ function App() {
         <Route exact path='/shop' component={Shop} />
         <Route exact path='/cart' component={Cart} />
         <Route exact path='/checkout' component={Checkout} />
+        <Route exact path='/payment' component={Payment} />
       </Switch>
     </div>
   );
