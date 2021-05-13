@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 const User = require('../models/user');
 const Cart = require('../models/cart');
+const Order = require('../models/order');
 
 exports.userCart = async (req, res) => {
     // get the cart from the request
@@ -78,4 +79,50 @@ exports.saveAddress = async (req, res) => {
     const user = await User.findOneAndUpdate({email: req.user.email}, { address: req.body.address }).exec();
     
     res.json({ok: true}) 
+}
+
+exports.createOrder = async (req, res) => {
+
+    const { paymentIntent } = req.body.stripeResponse
+
+    // get the user
+    const user = await User.findOne({email: req.user.email}).exec();
+
+    // get the cart
+    let {products} = await Cart.findOne({orderedBy: user._id}).exec();
+    console.log('products ',products)
+
+    // Save the order 
+    const newOrder = await new Order({
+        products,
+        paymentIntent,
+        orderdBy: user._id
+    }).save();
+
+    console.log('NEW ORDER SAVED => ', newOrder)
+
+    // perform bulk action to update multiple products (sold, quantity)
+    let bulkOptions = products.map(item => {
+        return {
+            updateOne: {
+                filter: { _id: item.product._id },
+                update: { $inc: { quantity: -item.count, sold: +item.count } }
+            }
+        }
+    })
+
+    let updated = await Product.bulkWrite(bulkOptions, {});
+    console.log('BULK ACTION OCCUR => ', updated)
+
+    res.json({ok: true})  
+}
+
+exports.userOrders = async (req, res) => {
+    // get the user
+    const user = await User.findOne({email: req.user.email}).exec();
+
+    // get the order
+    const order = await Order.find({orderdBy: user._id}).populate('products.product').exec()
+
+    res.json(order);
 }
