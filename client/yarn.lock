@@ -1480,6 +1480,11 @@
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
   integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
 
+"@david.kucsai/react-pdf-table@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@david.kucsai/react-pdf-table/-/react-pdf-table-0.3.0.tgz#d7c932394ea23209dce45051135bc16639e2a6bc"
+  integrity sha512-qL/co/JtkYH69SuXsllAbnQO0fbmOxofNwCLEo/oJU7BEkwiQYxGYAsZp1DQxLYwhlML7QgQpL/ApkhOWrIVug==
+
 "@eslint/eslintrc@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.0.tgz#99cc0a0584d72f1df38b900fb062ba995f395547"

@@ -3,6 +3,8 @@ import UserNav from '../../components/nav/UserNav';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
 import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons'
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Invoice from "../../components/order/Invoice";
 import { fetchUserOrders } from '../../functions/user'
 import ShowPaymentInfo from '../../components/cards/ShowPaymentInfo'
 
@@ -55,15 +57,23 @@ function History() {
         </table>
     )
 
+    const showDownloadLink = (order) => (
+        <PDFDownloadLink
+        document={<Invoice order={order} />}
+        fileName="invoice.pdf"
+        className="btn btn-sm btn-block btn-outline-primary"
+        >
+        Download PDF
+        </PDFDownloadLink>
+    );
+
     const showUserOrders = () => orders.map((order, i) => (
         <div className="m-5 p-3 card" key={i}>
             <p>Show Payment Info</p>
             {ShowPaymentInfo(order)}
             {showOrderInTable(order)}
             <div className="row">
-                <div className="col">
-                    PDF Download
-                </div>
+                <div className="col">{showDownloadLink(order)}</div>
             </div>
         </div>
     ))
