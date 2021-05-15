@@ -28,6 +28,7 @@ import SubCreate from './pages/admin/sub/SubCreate';
 import SubUpdate from './pages/admin/sub/SubUpdate';
 import CreateCoupon from './pages/admin/coupon/CreateCoupon';
 import History from './pages/user/History';
+import Wishlist from './pages/user/Wishlist';
 import Password from './pages/user/Password';
 import Header from './components/nav/Header';
 import { currentUser } from './functions/auth';
@@ -76,6 +77,7 @@ function App() {
         <Route exact path='/register/complete' component={RegisterComplete} />
         <Route exact path='/forgot/password' component={ForgotPassword} />
         <UserRouter exact path='/user/history' component={History} />
+        <UserRouter exact path='/user/wishlist' component={Wishlist} />
         <UserRouter exact path='/user/password' component={Password} />
         <AdminRouter exact path='/admin/dashboard' component={AdminDashboard} />
         <AdminRouter exact path='/admin/category' component={CategoryCreate} />

@@ -57,6 +57,7 @@ function Header() {
                         {user && user.role === 'admin' && (
                             <Menu.Item key="dashboard"><NavLink to="/admin/dashboard">Dashboard</NavLink></Menu.Item>
                         )}
+                        <Menu.Item icon={<LogoutOutlined />}><NavLink to="/user/history">History</NavLink></Menu.Item>
                         <Menu.Item icon={<LogoutOutlined />} onClick={logout}>Logout</Menu.Item>
                     </SubMenu>
                 )}

@@ -70,7 +70,7 @@ function History() {
     const showUserOrders = () => orders.map((order, i) => (
         <div className="m-5 p-3 card" key={i}>
             <p>Show Payment Info</p>
-            {ShowPaymentInfo(order)}
+            <ShowPaymentInfo order={order} />
             {showOrderInTable(order)}
             <div className="row">
                 <div className="col">{showDownloadLink(order)}</div>
