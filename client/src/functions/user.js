@@ -40,3 +40,18 @@ export const addToWishlist = async (productId, authtoken) =>
       },
     }
   );
+
+export const createCashOrderForUser = async (
+  authtoken,
+  COD,
+  couponTrueOrFalse
+) =>
+  await axios.post(
+    `http://localhost:8000/api/user/cash-order`,
+    { couponApplied: couponTrueOrFalse, COD },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );

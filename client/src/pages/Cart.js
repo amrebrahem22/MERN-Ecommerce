@@ -23,6 +23,20 @@ const Cart = ({history}) => {
         })
         .catch(err => console.log(err))
     }
+    
+    const saveCashOrderToDb = () => {
+        // console.log("cart", JSON.stringify(cart, null, 4));
+        dispatch({
+        type: "COD",
+        payload: true,
+        });
+        userCart(cart, user.token)
+        .then((res) => {
+            console.log("CART POST RES", res);
+            if (res.data.ok) history.push("/checkout");
+        })
+        .catch((err) => console.log("cart save err", err));
+    };
 
     return (
         <div className="container-fluid pt-2">
@@ -65,13 +79,35 @@ const Cart = ({history}) => {
                     <hr />
                     Total: <b>${gettotal()}</b>
                     <hr />
-                    {user? (
-                        <button className="btn btn-sm btn-primary mt-2" onClick={saveOrderToDb} disabled={!cart.length}>Proceed To checkout</button>
+                    {user ? (
+                        <>
+                        <button
+                            onClick={saveOrderToDb}
+                            className="btn btn-sm btn-primary mt-2"
+                            disabled={!cart.length}
+                        >
+                            Proceed to Checkout
+                        </button>
+                        <br />
+                        <button
+                            onClick={saveCashOrderToDb}
+                            className="btn btn-sm btn-warning mt-2"
+                            disabled={!cart.length}
+                        >
+                            Pay Cash on Delivery
+                        </button>
+                        </>
                     ) : (
-                        <Link to={{
-                            pathname: '/login',
-                            state: { from: 'cart' }
-                        }} className="btn btn-sm btn-primary mt-2">Login To checkout</Link>
+                        <button className="btn btn-sm btn-primary mt-2">
+                        <Link
+                            to={{
+                            pathname: "/login",
+                            state: { from: "cart" },
+                            }}
+                        >
+                            Login to Checkout
+                        </Link>
+                        </button>
                     )}
                 </div>
             </div>
